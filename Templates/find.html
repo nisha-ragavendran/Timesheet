@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div>
+        <form action='/delete' method='post'>
+            <div>
+                <label for="User">User:</label>
+                <input type="text" id="User" name="User" value={{ data.document.User }} readonly>
+                <br>
+                <br>
+                <label for="Date">Date:</label>
+                <input type="date" id="Date" name="Date" value={{ data.document.Date}} readonly>
+                <br>
+                <br>
+            </div>
+            
+        <div>
+            <table>
+                <tr border-color:1px solid black>
+                    <th>PROJECT</th>
+                    <th>TASK</th>
+                    <th>HOURS</th>
+                </tr>
+
+
+                <!-- {% for key,value in data.document.Task_dts.items() %}
+                <tr>
+                    <td><input type="text" id="txt{{ value[0] }}_id" name="{{ value[0] }}_name" value="{{ value[0] }}" />
+                    </td>
+                    <td><input type="text" id="{{ value[1] }}_id" size="160" value="{{ value[1] }}" /></td>
+                    <td><input type="text" value="{{ value[2] }}" /></td>
+                </tr>
+                {% endfor %}
+            
+            {% for task_dts_single in task_dts_sep %}
+             {% endfor %}
+
+           WORKINGGG!  <td>{{ data.document.Task_dts[task_dts_sep] }} </td>
+            -->
+                {% for task_dts_sep in data.document.Task_dts %}
+                  <tr border-color:1px solid black>
+                     {% for task_dts_sep_single in data.document.Task_dts[task_dts_sep] %}
+                      <td> {{ task_dts_sep_single }}</td>
+                      {% endfor %}
+                    </tr>
+                {% endfor %}
+
+
+
+            </table>
+            <br>
+            
+                <div>
+                    <button formaction="/delete" formmethod="post">Delete</button>
+                </div>
+            </form>
+
+        </div>
+        
+
+</body>
+
+</html>

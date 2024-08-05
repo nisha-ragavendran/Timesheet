@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.js"></script>
+        <script src="/static/button_add.js"></script>
+        
+    <style>
+    table, th, td {
+    border-color:1px solid black;
+    }
+    .error{
+        color: red
+    }
+    </style>
+    <body>
+        <h4>Timesheet</h4>
+    <div class="indexStyle" >
+        <form id="login" action='/insertdata' method='post'>
+            <label for="User">User:</label>
+            <input type="text" id="User" name="User">
+            <br>
+            <br>
+            <label for="Date">Date:</label>
+            <input type="date" id="Date" name="Date" min="2023-01-01" max="2023-12-31">
+            <br>
+            <br>
+           <!-- <div style="border:1px solid black">
+              <table style="width:100%">
+                <tr>
+                    <th>Project</th>
+                    <th>Task</th>
+                    <th>No.OfHours</th>
+                </tr>
+                
+           </table>
+        </div> -->
+        <div>
+            <table>
+                <tr>
+                    <th>PROJECT</th>
+                    <th>TASK</th>
+                    <th>HOURS</th>
+                    </tr>
+                <tr>
+                  <td><input type="text" id="text_0_P" name="text_0_P" /></td>
+                  <td><input type="text" id="text_0_T" name="text_0_T" size="160"/></td>
+                  <td><input type="text" class="hours" id="text_0_H" name="text_0_H" /></td>
+                  </tr>
+                </table>
+                <br>
+                
+                 <input type ="hidden" id="totalhours" name="totalhours" value ="0" readonly/>
+                 <div class ="err" style="display: none; color: red;">The total number of working hours should be 8</div>
+                
+                <input type ="hidden" id="counter" name="counter" value="1" readonly/>
+                <br>
+                <br>
+                
+                <input type="button" id="btnAdd" value="Add" style="float: right;"/>
+        <br>
+    </div>
+           <!--  <label for="User">User:</label>
+            <input type="text" id="User" name="User">
+            <br>    
+            <br>
+            <label for="Date">Date:</label>
+            <input type="date" id="Date" name="Date" min="2023-01-01" max="2023-12-31">
+            <br>
+            <br>
+            <label for="Project">Project Name:</label>
+            <input type="text" id="Project" name="Project">
+            <br>
+            <br>
+            <label for="NoOfHours">No. of Hours:</label>
+            <input type="text" id="NoOfHours" name="NoOfHours">
+             <label for="enddt">End Date:</label>
+            <input type="date" id="enddt" name="enddt" min="2023-01-01" max="2023-12-31"><br>
+            -->
+            <!-- <br>
+            <br>
+            <br>
+            <textarea name="comments" style="width:500px; height:300px;">Comments..</textarea>
+            -->
+            <br>
+            <br> 
+            <button formaction="/find" formmethod="get">Find</button>
+            <input type="submit" value="Submit">
+        </form>
+          <br>
+          
+    </div>
+        <br>
+        <!-- <a href="find">
+            <button>Find</button>
+        </a>
+        <form action='/find' method='get'>
+            <label for="User">User:</label>
+            <input type="text" id="User" name="User">
+            <input type="submit" value="Find">
+        </form> -->
+        
+    </body>
+    <script src="/static/validate.js"></script>
+
+</head>
+</html>
