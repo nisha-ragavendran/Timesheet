@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
-    <body>
-        <h3>Timesheet has been updated!</h3>
-    </body>
+  <body>
+    {% if success %}
+      <h3>{{ message }}</h3>
+    {% else %}
+      <h3>Unable to submit timesheet.</h3>
+      <p>{{ message }}</p>
+    {% endif %}
+    <a href="/home">Back to Home</a>
+  </body>
 </html>

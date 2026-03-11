@@ -1,65 +1,57 @@
+import os
+
 import requests
-import json
 
-def insert_row(Create_row):
-    url = "https://eu-central-1.aws.data.mongodb-api.com/app/data-qjiey/endpoint/data/v1/action/insertOne"
+MONGODB_DATA_API_BASE_URL = os.getenv(
+    "MONGODB_DATA_API_BASE_URL",
+    "https://eu-central-1.aws.data.mongodb-api.com/app/data-qjiey/endpoint/data/v1/action",
+)
+MONGODB_COLLECTION = os.getenv("MONGODB_COLLECTION", "Timesheet")
+MONGODB_DATABASE = os.getenv("MONGODB_DATABASE", "Timesheet_1")
+MONGODB_DATA_SOURCE = os.getenv("MONGODB_DATA_SOURCE", "Cluster0")
 
-    payload = json.dumps({
-    "collection": "Timesheet",
-    "database": "Timesheet_1",
-    "dataSource": "Cluster0",
-    "document":Create_row
-    
-    })
-    headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Request-Headers': '*',
-    'api-key': 'zDjXFEulJXCLlFXnVkVctDZ4h7c6XKzcnpXwS5TBP6r0k14xYe35aXHMf1j5JSVa',
+
+def _get_headers():
+    api_key = os.getenv("MONGODB_DATA_API_KEY", "").strip()
+    if not api_key:
+        raise ValueError("MONGODB_DATA_API_KEY environment variable is not set.")
+    return {
+        "Content-Type": "application/json",
+        "Access-Control-Request-Headers": "*",
+        "api-key": api_key,
     }
 
-    response = requests.request("POST", url, headers=headers, data=payload)
 
-    print(response.text)
-
-def find_data(User_name,Date):
-    url = "https://eu-central-1.aws.data.mongodb-api.com/app/data-qjiey/endpoint/data/v1/action/findOne"
-
-    payload = json.dumps({
-    "collection": "Timesheet",
-    "database": "Timesheet_1",
-    "dataSource": "Cluster0",
-    "filter":{"User":User_name,
-              "Date":Date}
-    })
-    headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Request-Headers': '*',
-    'api-key': 'zDjXFEulJXCLlFXnVkVctDZ4h7c6XKzcnpXwS5TBP6r0k14xYe35aXHMf1j5JSVa',
+def _perform_action(action, payload):
+    request_payload = {
+        "collection": MONGODB_COLLECTION,
+        "database": MONGODB_DATABASE,
+        "dataSource": MONGODB_DATA_SOURCE,
     }
+    request_payload.update(payload)
 
-    response = requests.request("POST", url, headers=headers, data=payload)
+    try:
+        response = requests.post(
+            f"{MONGODB_DATA_API_BASE_URL}/{action}",
+            headers=_get_headers(),
+            json=request_payload,
+            timeout=15,
+        )
+        response.raise_for_status()
+        response_data = response.json()
+        response_data["ok"] = True
+        return response_data
+    except (requests.RequestException, ValueError) as exc:
+        return {"ok": False, "error": str(exc)}
 
-    print(response.text)
-    return json.loads(response.text)
 
-def delete_data(User_name,Date):
-    url = "https://eu-central-1.aws.data.mongodb-api.com/app/data-qjiey/endpoint/data/v1/action/deleteOne"
+def insert_row(create_row):
+    return _perform_action("insertOne", {"document": create_row})
 
-    payload = json.dumps({
-    "collection": "Timesheet",
-    "database": "Timesheet_1",
-    "dataSource": "Cluster0",
-    "filter":{"User":User_name,
-              "Date":Date}
-    
-    })
-    headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Request-Headers': '*',
-    'api-key': 'zDjXFEulJXCLlFXnVkVctDZ4h7c6XKzcnpXwS5TBP6r0k14xYe35aXHMf1j5JSVa',
-    }
 
-    response = requests.request("POST", url, headers=headers, data=payload)
+def find_data(user_name, date):
+    return _perform_action("findOne", {"filter": {"User": user_name, "Date": date}})
 
-    print(response.text)
-    
+
+def delete_data(user_name, date):
+    return _perform_action("deleteOne", {"filter": {"User": user_name, "Date": date}})

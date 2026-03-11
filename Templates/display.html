@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
-    <body>
-        <div>
-            The user is deleted!!!
-        </div>
+  <body>
+    {% if success %}
+      <div>{{ message }}</div>
+    {% else %}
+      <div>{{ message }}</div>
+    {% endif %}
+    <a href="/home">Back to Home</a>
+  </body>
+</html>

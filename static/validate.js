@@ -1,31 +1,49 @@
-$(function(){
-    var validateform = $("#login")
-    $.validator.setDefaults({ ignore: '' });
-    
-    $.validator.addMethod("customrule", function(value, element, param) { 
-        return this.optional(element) || value === param; 
-      }, "Total working hours should be {0}!");
+$(function () {
+  var validateForm = $("#login");
+  $.validator.setDefaults({ ignore: "" });
 
-    validateform.validate({
-        rules:{
-            User:{
-                required: true
-            },
-            Date:{
-                required: true
-            },
-            counter:{
-                required:true,
-                customrule:8
-            }
-        },
-        messages:{
-            User:{
-                required: 'Please enter Username'
-            },
-            Date:{
-                required: 'Please enter Date'
-            }
-        }
-    })
-})
+  $.validator.addMethod(
+    "exacttotal",
+    function (value, element, param) {
+      if (this.optional(element)) {
+        return true;
+      }
+      return Number(value) === param;
+    },
+    "Total working hours should be {0}."
+  );
+
+  validateForm.validate({
+    rules: {
+      User: {
+        required: true,
+      },
+      Date: {
+        required: true,
+      },
+      totalhours: {
+        required: true,
+        exacttotal: 8,
+      },
+      text_0_H: {
+        required: true,
+        number: true,
+      },
+    },
+    messages: {
+      User: {
+        required: "Please enter username.",
+      },
+      Date: {
+        required: "Please enter date.",
+      },
+      totalhours: {
+        required: "Please enter hours.",
+      },
+      text_0_H: {
+        required: "Please enter hours.",
+        number: "Hours must be numeric.",
+      },
+    },
+  });
+});
